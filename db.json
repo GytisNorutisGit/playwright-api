@@ -1,0 +1,43 @@
+{
+  "posts": [
+    {
+      "id": 3,
+      "title": "Sample Post 3",
+      "body": "This is the body of post 3",
+      "userId": 2
+    }
+  ],
+  "users": [
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "username": "janesmith",
+      "email": "jane@example.com"
+    },
+    {
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "john.doe@example.com",
+      "id": 3
+    },
+    {
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "john.doe@example.com",
+      "id": 4
+    },
+    {
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "john.doe@example.com",
+      "id": 5
+    },
+    {
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "john.doe@example.com",
+      "id": 6
+    }
+  ],
+  "comments": []
+}

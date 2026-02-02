@@ -1,0 +1,30 @@
+{
+  "name": "playwright-api",
+  "version": "1.0.0",
+  "description": "Playwright API Test automation framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:get": "playwright test tests/api/get.spec.ts",
+    "test:crud": "playwright test tests/api/crud.spec.ts"
+  },
+  "keywords": [
+    "playwright",
+    "api-testing",
+    "automation",
+    "testing",
+    "e2e"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.1",
+    "@types/node": "^25.2.0",
+    "json-server": "^0.17.4",
+    "typescript": "^5.9.3"
+  }
+}

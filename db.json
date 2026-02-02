@@ -5,6 +5,16 @@
       "title": "Sample Post 3",
       "body": "This is the body of post 3",
       "userId": 2
+    },
+    {
+      "title": "Only Title",
+      "id": 4
+    },
+    {
+      "title": "Test Post with Custom Headers",
+      "body": "Test Body",
+      "userId": 1,
+      "id": 5
     }
   ],
   "users": [
@@ -37,6 +47,12 @@
       "username": "johndoe",
       "email": "john.doe@example.com",
       "id": 6
+    },
+    {
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "john.doe@example.com",
+      "id": 7
     }
   ],
   "comments": []

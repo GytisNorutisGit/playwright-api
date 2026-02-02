@@ -43,11 +43,17 @@ playwright-api/
 ├── tests/
 │   └── api/
 │       ├── get.spec.ts       # GET request tests
-│       └── crud.spec.ts      # POST, PUT, PATCH, DELETE tests
+│       ├── crud.spec.ts      # POST, PUT, PATCH, DELETE tests
+│       ├── headers.spec.ts   # Headers and query parameter tests
+│       └── errors.spec.ts    # Error handling and edge case tests
 ├── utils/
 │   ├── apiHelper.ts          # API utility functions
 │   └── testDataHelper.ts     # Test data generators
 ├── config/                   # Configuration files (optional)
+├── db.json                   # Mock API database for json-server
+├── .github/
+│   └── workflows/
+│       └── playwright.yml    # GitHub Actions CI/CD workflow
 ├── playwright.config.ts      # Playwright configuration
 ├── package.json
 └── README.md
@@ -90,13 +96,16 @@ npm run test:report
 
 The framework is configured in `playwright.config.ts`. Key configurations include:
 
-- **Base URL**: Set to `https://jsonplaceholder.typicode.com` (a free fake REST API)
+- **Base URL**: Set to `http://localhost:3000` (uses json-server mock API)
 - **Test Directory**: `./tests`
 - **Parallel Execution**: Enabled
 - **Reporters**: HTML and list reporters
 - **Retries**: 2 retries on CI, 0 locally
+- **Web Server**: Automatically starts json-server on port 3000 for tests
 
-You can modify these settings based on your needs.
+The framework uses `json-server` to provide a mock REST API for testing. The mock database is defined in `db.json` and is automatically started when running tests.
+
+You can modify these settings based on your needs. To test against a real API, update the `baseURL` in the config or set the `API_URL` environment variable.
 
 ## Writing Tests
 
@@ -188,6 +197,19 @@ const newPost = TestDataHelper.generatePost({
 - Delete post (DELETE)
 - Delete user (DELETE)
 
+### Headers Tests (`tests/api/headers.spec.ts`)
+- Send custom headers in requests
+- Verify response headers
+- Handle query parameters
+- Set content-type headers
+
+### Error Handling Tests (`tests/api/errors.spec.ts`)
+- Handle 404 errors
+- Handle invalid IDs
+- Verify response times
+- Test JSON response structure
+- Handle large response payloads
+
 ## CI/CD Integration
 
 The framework is CI-ready with the following features:
@@ -241,4 +263,17 @@ ISC
 
 - [Playwright Documentation](https://playwright.dev/)
 - [Playwright API Testing Guide](https://playwright.dev/docs/api-testing)
-- [JSONPlaceholder - Free Fake REST API](https://jsonplaceholder.typicode.com/)
+- [json-server - Fake REST API](https://github.com/typicode/json-server)
+
+## About
+
+This framework demonstrates best practices for API testing with Playwright:
+- ✅ Isolated test cases that don't depend on each other
+- ✅ Utility functions for code reusability
+- ✅ Test data generators for consistent test data
+- ✅ Proper assertions and error handling
+- ✅ CI/CD ready with GitHub Actions
+- ✅ Mock API server for offline testing
+- ✅ Comprehensive test coverage (GET, POST, PUT, PATCH, DELETE)
+- ✅ Header and authentication testing
+- ✅ Error handling and edge case testing

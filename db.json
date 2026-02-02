@@ -15,10 +15,14 @@
       "id": 5
     },
     {
+      "title": "Only Title",
+      "id": 6
+    },
+    {
       "title": "Test Post with Custom Headers",
       "body": "Test Body",
       "userId": 1,
-      "id": 6
+      "id": 7
     }
   ],
   "users": [
@@ -63,6 +67,12 @@
       "username": "johndoe",
       "email": "john.doe@example.com",
       "id": 8
+    },
+    {
+      "name": "John Doe",
+      "username": "johndoe",
+      "email": "john.doe@example.com",
+      "id": 9
     }
   ],
   "comments": []

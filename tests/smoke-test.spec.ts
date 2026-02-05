@@ -82,7 +82,6 @@ test('Create, Update & Delete Article', async ({ api }) => {
     const newSlugId = updateArticleResponse.article.slug;
     expect(updateArticleResponse.article.title).toBe("Test-1 Modified");
 
-
     //Get call to verify 1st article is created
     const articlesResponse = await api
         .path('/articles')

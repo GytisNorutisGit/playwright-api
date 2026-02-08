@@ -1,14 +1,11 @@
 import { test } from '../fixtures';
 import { expect } from '../utils/assertions';
+import { createToken } from '../helpers/createToken';
 
 let authToken: string;
 
 test.beforeAll('Get Auth Token', async ({ api, config }) => {
-    const responseToken = await api
-        .path('/users/login')
-        .body({ "user": { "email": config.userEmail, "password": config.userPassword } })
-        .postRequest(200);
-    authToken = `Token ${responseToken.user.token}`;
+    authToken = await createToken(config.userEmail, config.userPassword);
 });
 
 test('Get Articles', async ({ api }) => {

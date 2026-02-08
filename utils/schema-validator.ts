@@ -2,10 +2,12 @@ import fs from 'fs/promises';
 import path from 'path'
 import Ajv from 'ajv';
 import { createSchema } from 'genson-js'
+import addFormats from 'ajv-formats';
 
 const SCHEMA_BASE_PATH = './response-schemas';
 // Setting allErrors to true to get all validation errors instead of just the first one.
 const ajv = new Ajv({ allErrors: true });
+addFormats(ajv);
 
 export async function validateSchema(dirName: string, fileName: string, responseBody: object, createSchemaFlag: boolean = false) {
     const schemaPath = path.join(SCHEMA_BASE_PATH, dirName, `${fileName}_schema.json`);
@@ -19,7 +21,7 @@ export async function validateSchema(dirName: string, fileName: string, response
     const schema = await loadSchema(schemaPath);
     const validate = ajv.compile(schema);
 
-    //Validate response and throw error with details
+    //Validate response and throw error with details.
     const valid = validate(responseBody);
     if (!valid) {
         throw new Error(`Schema validation failed for ${fileName}\n` +
@@ -42,6 +44,7 @@ async function loadSchema(schemaPath: string) {
 
 async function generateNewSchema(responseBody: object, schemaPath: string) {
     //Generate schema automatically using genson-js and save to specified path.
+    //NB: modify this to add additional formats if needed.
     try {
         const generatedSchema = createSchema(responseBody);
         await fs.mkdir(path.dirname(schemaPath), { recursive: true });

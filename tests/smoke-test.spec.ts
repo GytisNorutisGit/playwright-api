@@ -1,6 +1,5 @@
 import { test } from '../fixtures';
 import { expect } from '../utils/assertions';
-import { createToken } from '../helpers/createToken';
 
 
 test('Get Articles', async ({ api }) => {
@@ -18,6 +17,7 @@ test('Get Tags List', async ({ api }) => {
     const response = await api
         .path('/tags')
         .getRequest(200);
+    expect(response).shouldMatchSchema('tags', 'GET_tags');
     expect(response).toHaveProperty('tags');
     expect(response.tags[0]).toContain('Test');
     expect(response.tags.length).shouldBeLessThanOrEqual(10);

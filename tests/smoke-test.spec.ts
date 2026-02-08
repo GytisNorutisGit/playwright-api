@@ -1,5 +1,5 @@
 import { test } from '../fixtures';
-import { expect } from '@playwright/test';
+import { expect } from '../utils/assertions';
 
 let authToken: string;
 
@@ -17,8 +17,8 @@ test('Get Articles', async ({ api }) => {
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
     expect(response).toHaveProperty('articles');
-    expect(response.articles.length).toBeLessThanOrEqual(10);
-    expect(response.articlesCount).toEqual(10);
+    expect(response.articles.length).shouldBeLessThanOrEqual(10);
+    expect(response.articlesCount).shouldEqual(10);
 });
 
 test('Get Tags List', async ({ api }) => {
@@ -27,7 +27,7 @@ test('Get Tags List', async ({ api }) => {
         .getRequest(200);
     expect(response).toHaveProperty('tags');
     expect(response.tags[0]).toContain('Test');
-    expect(response.tags.length).toBeLessThanOrEqual(10);
+    expect(response.tags.length).shouldBeLessThanOrEqual(10);
 });
 
 test('Create & Delete Article', async ({ api }) => {
@@ -46,7 +46,7 @@ test('Create & Delete Article', async ({ api }) => {
         .headers({ 'Authorization': authToken })
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
-    expect(articlesResponse.articles[0].title).toEqual('Test-1');
+    expect(articlesResponse.articles[0].title).shouldEqual('Test-1');
 
     //Delete the created article
     await api
@@ -60,7 +60,7 @@ test('Create & Delete Article', async ({ api }) => {
         .headers({ 'Authorization': authToken })
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
-    expect(articlesResponseAfterDelete.articles[0].title).not.toEqual('Test-1');
+    expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual('Test-1');
 });
 
 test('Create, Update & Delete Article', async ({ api }) => {
@@ -88,7 +88,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .headers({ 'Authorization': authToken })
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
-    expect(articlesResponse.articles[0].title).toEqual('Test-1 Modified');
+    expect(articlesResponse.articles[0].title).shouldEqual('Test-1 Modified');
 
     //Delete the created article
     await api
@@ -102,6 +102,6 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .headers({ 'Authorization': authToken })
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
-    expect(articlesResponseAfterDelete.articles[0].title).not.toEqual('Test-1 Modified');
+    expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual('Test-1 Modified');
 });
 

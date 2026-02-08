@@ -8,16 +8,17 @@ test('Get Articles', async ({ api }) => {
         .params({ limit: 0, offset: 0 })
         .clearAuth() //Clears the auth header for this request to test the public endpoint
         .getRequest(200);
+    await expect(response).shouldMatchSchema('articles', 'GET_articles');
     expect(response).toHaveProperty('articles');
     expect(response.articles.length).shouldBeLessThanOrEqual(10);
-    expect(response.articlesCount).not.shouldEqual(10);
+    expect(response.articlesCount).shouldEqual(10);
 });
 
 test('Get Tags List', async ({ api }) => {
     const response = await api
         .path('/tags')
         .getRequest(200);
-    expect(response).shouldMatchSchema('tags', 'GET_tags');
+    await expect(response).shouldMatchSchema('tags', 'GET_tags');
     expect(response).toHaveProperty('tags');
     expect(response.tags[0]).toContain('Test');
     expect(response.tags.length).shouldBeLessThanOrEqual(10);
@@ -29,6 +30,7 @@ test('Create & Delete Article', async ({ api }) => {
         .path('/articles')
         .body({ "article": { "title": "Test-1", "description": "Test Title 1", "body": "Test Body 1", "tagList": [] } })
         .postRequest(201);
+    await expect(newArticleResponse).shouldMatchSchema('articles', 'POST_articles');
     expect(newArticleResponse.article.title).toBe("Test-1");
     const slugId = newArticleResponse.article.slug;
 

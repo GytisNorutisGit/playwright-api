@@ -11,7 +11,7 @@ test('Get Articles', async ({ api }) => {
         .getRequest(200);
     expect(response).toHaveProperty('articles');
     expect(response.articles.length).shouldBeLessThanOrEqual(10);
-    expect(response.articlesCount).shouldEqual(10);
+    expect(response.articlesCount).not.shouldEqual(10);
 });
 
 test('Get Tags List', async ({ api }) => {

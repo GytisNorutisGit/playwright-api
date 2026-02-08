@@ -52,6 +52,7 @@ export class RequestHandler {
             headers: this.apiHeaders
         });
 
+        this.resetFields();
         const actualStatus = response.status();
         const responseJson = await response.json();
         this.logger?.logResponse(actualStatus, responseJson);
@@ -68,6 +69,7 @@ export class RequestHandler {
             data: this.apiBody
         });
 
+        this.resetFields();  
         const actualStatus = response.status();
         const responseJson = await response.json();
         this.logger?.logResponse(actualStatus, responseJson);
@@ -84,6 +86,7 @@ export class RequestHandler {
             data: this.apiBody
         });
 
+        this.resetFields();
         const actualStatus = response.status();
         const responseJson = await response.json();
         this.logger?.logResponse(actualStatus, responseJson);
@@ -99,6 +102,7 @@ export class RequestHandler {
             headers: this.apiHeaders
         });
 
+        this.resetFields();
         const actualStatus = response.status();
         this.logger?.logResponse(actualStatus);
         this.validateStatusCode(actualStatus, statusCode, this.deleteRequest);
@@ -120,5 +124,14 @@ export class RequestHandler {
             Error.captureStackTrace(error, callingFunction);
             throw error;
         }
+    }
+
+    //Reset all fields to prevent leaking data between requests
+    private resetFields() {
+        this.apiBody = {};
+        this.apiHeaders = {};
+        this.baseUrl = undefined;
+        this.queryParams = {};
+        this.apiPath = '';  
     }
 }

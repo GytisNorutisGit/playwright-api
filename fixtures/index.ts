@@ -1,5 +1,6 @@
 import { test as base } from '@playwright/test';
 import { RequestHandler } from '../utils/request-handler';
+import { APILogger } from '../utils/logger';
 
 type CustomFixtures = {
     api: RequestHandler;
@@ -8,7 +9,8 @@ type CustomFixtures = {
 export const test = base.extend<CustomFixtures>({
     api: async ({request}, use) => {
         const baseUrl = 'https://conduit-api.bondaracademy.com/api';
-        const requestHandler = new RequestHandler(request, baseUrl);
+        const logger = new APILogger();
+        const requestHandler = new RequestHandler(request, baseUrl, logger);
         await use(requestHandler);
     }
 });

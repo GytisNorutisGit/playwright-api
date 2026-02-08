@@ -3,10 +3,10 @@ import { expect } from '../utils/assertions';
 
 let authToken: string;
 
-test.beforeAll('Get Auth Token', async ({ api }) => {
+test.beforeAll('Get Auth Token', async ({ api, config }) => {
     const responseToken = await api
         .path('/users/login')
-        .body({ "user": { "email": process.env.USER_EMAIL, "password": process.env.USER_PASSWORD } })
+        .body({ "user": { "email": config.userEmail, "password": config.userPassword } })
         .postRequest(200);
     authToken = `Token ${responseToken.user.token}`;
 });

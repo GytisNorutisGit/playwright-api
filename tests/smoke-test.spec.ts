@@ -105,11 +105,3 @@ test('Create, Update & Delete Article', async ({ api }) => {
     expect(articlesResponseAfterDelete.articles[0].title).not.toEqual('Test-1 Modified');
 });
 
-test('logger', () => {
-    const logger = new APILogger();
-    logger.logRequest('GET', 'https://example.com/api/data', { 'Authorization': 'Token abc123' }, { key: 'value' });
-    logger.logResponse(201, {foo: 'bar'});
-    const logs = logger.getRecentLogs();
-    console.log(logs)
-
-});

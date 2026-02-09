@@ -57,6 +57,6 @@ jobs:
       uses: dorny/test-reporter@v1
       if: ${{ !cancelled() }}
       with:
-        name: Playwright Tests
+        name: Test Summary
         path: test-results/results.xml
         reporter: java-junit

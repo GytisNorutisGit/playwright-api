@@ -55,5 +55,5 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         name: Playwright Tests
-        path: test-results/results.json
-        reporter: playwright-json
+        path: test-results/results.xml
+        reporter: java-junit

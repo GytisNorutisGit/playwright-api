@@ -1,27 +1,43 @@
 name: Playwright Tests
+
+# ----------------------------------------------
+# Trigger
+# ----------------------------------------------
 on:
   # workflow_dispatch: # Only runs when manually triggered from GitHub Actions tab
   push:
     branches: [ main, master ]
+
+# ----------------------------------------------
+# Jobs
+# ----------------------------------------------
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
+
+    # Setup -------------------------------------
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: lts/*
     - name: Install dependencies
       run: npm ci
+
+    # Environment --------------------------------
     - name: Create .env file
       run: |
         echo "USER_EMAIL=${{ secrets.USER_EMAIL }}" >> .env
         echo "USER_PASSWORD=${{ secrets.USER_PASSWORD }}" >> .env
+
+    # Test Execution -----------------------------
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test
+
+    # Reporting ----------------------------------
     - name: Playwright Report Summary
       uses: daun/playwright-report-summary@v3
       if: ${{ !cancelled() }}
@@ -34,3 +50,10 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: ${{ !cancelled() }}
+      with:
+        name: Playwright Tests
+        path: test-results/results.json
+        reporter: playwright-json

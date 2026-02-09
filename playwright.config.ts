@@ -10,7 +10,7 @@ export default defineConfig({
     fullyParallel: false,
     retries: process.env.CI ? 2 : 0,
     workers: 1,
-    reporter: [['html'], ['list']],
+    reporter: [['html'], ['list'], ['json', { outputFile: 'test-results/results.json' }]],
     use: {},
     projects: [
         {

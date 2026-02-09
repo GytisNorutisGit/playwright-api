@@ -28,10 +28,10 @@ test('Create & Delete Article', async ({ api }) => {
     //Create an article
     const newArticleResponse = await api
         .path('/articles')
-        .body({ "article": { "title": "Test-1", "description": "Test Title 1", "body": "Test Body 1", "tagList": [] } })
+        .body({ article: { title: 'Test-1', description: 'Test Title 1', body: 'Test Body 1', tagList: [] } })
         .postRequest(201);
     await expect(newArticleResponse).shouldMatchSchema('articles', 'POST_articles');
-    expect(newArticleResponse.article.title).toBe("Test-1");
+    expect(newArticleResponse.article.title).toBe('Test-1');
     const slugId = newArticleResponse.article.slug;
 
     //Get call to verify 1st article is created
@@ -58,18 +58,18 @@ test('Create, Update & Delete Article', async ({ api }) => {
     //Create an article
     const newArticleResponse = await api
         .path('/articles')
-        .body({ "article": { "title": "Test-1", "description": "Test Title 1", "body": "Test Body 1", "tagList": [] } })
+        .body({ article: { title: 'Test-1', description: 'Test Title 1', body: 'Test Body 1', tagList: [] } })
         .postRequest(201);
-    expect(newArticleResponse.article.title).toBe("Test-1");
+    expect(newArticleResponse.article.title).toBe('Test-1');
     const slugId = newArticleResponse.article.slug;
 
     //Update the created article
     const updateArticleResponse = await api
         .path(`/articles/${slugId}`)
-        .body({ "article": { "title": "Test-1 Modified", "description": "Test Title 1", "body": "Test Body 1", "tagList": [] } })
+        .body({ article: { title: 'Test-1 Modified', description: 'Test Title 1', body: 'Test Body 1', tagList: [] } })
         .putRequest(200);
     const newSlugId = updateArticleResponse.article.slug;
-    expect(updateArticleResponse.article.title).toBe("Test-1 Modified");
+    expect(updateArticleResponse.article.title).toBe('Test-1 Modified');
 
     //Get call to verify 1st article is created
     const articlesResponse = await api

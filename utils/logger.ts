@@ -14,7 +14,7 @@ export class APILogger {
     getRecentLogs() {
         const logs = this.recentLogs.map(log => {
             return `******************** ${log.type} ********************\n${JSON.stringify(log.data, null, 2)}`;
-        }).join('\n\n')
+        }).join('\n\n');
         return logs;
     }
 }

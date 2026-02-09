@@ -1,6 +1,6 @@
-import { APIRequestContext } from "@playwright/test";
-import { test } from "@playwright/test";
-import { APILogger } from "./logger";
+import { APIRequestContext } from '@playwright/test';
+import { test } from '@playwright/test';
+import { APILogger } from './logger';
 
 export class RequestHandler {
 
@@ -127,11 +127,11 @@ export class RequestHandler {
     }
 
     private getUrl() {
-        const url = new URL(`${this.baseUrl ?? this.defaultBaseUrl}${this.apiPath}`)
+        const url = new URL(`${this.baseUrl ?? this.defaultBaseUrl}${this.apiPath}`);
         for (const [key, value] of Object.entries(this.queryParams)) {
             url.searchParams.append(key, String(value));
         }
-        return url.toString()
+        return url.toString();
     }
 
     private validateStatusCode(actualStatus: number, expectStatus: number, callingFunction: Function) {

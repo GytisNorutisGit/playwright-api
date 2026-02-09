@@ -1,8 +1,8 @@
-import { config } from "../api-test-config";
-import { RequestHandler } from "../utils/request-handler";
-import { APILogger } from "../utils/logger";
-import { request } from "@playwright/test";
-import { create } from "node:domain";
+import { config } from '../api-test-config';
+import { RequestHandler } from '../utils/request-handler';
+import { APILogger } from '../utils/logger';
+import { request } from '@playwright/test';
+import { create } from 'node:domain';
 
 export async function createToken(email: string, password: string) {
     const context = await request.newContext();
@@ -12,7 +12,7 @@ export async function createToken(email: string, password: string) {
     try {
         const tokenResponse = await api
             .path('/users/login')
-            .body({ "user": { "email": email, "password": password } })
+            .body({ user: { email: email, password: password } })
             .postRequest(200);
         return `Token ${tokenResponse.user.token}`;
     } catch (error) {

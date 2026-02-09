@@ -6,7 +6,7 @@ let apiLogger: APILogger;
 
 export const setCustomExpectLogger = (logger: APILogger) => {
     apiLogger = logger;
-}
+};
 
 declare global {
     namespace PlaywrightTest {
@@ -36,7 +36,7 @@ export const expect = baseExpect.extend({
         }
 
         //If .not is used on assertion, updated Expected message with ${hint}
-        const hint = this.isNot ? 'not' : ''
+        const hint = this.isNot ? 'not' : '';
         const message = this.utils.matcherHint('shouldEqual', undefined, undefined, { isNot: this.isNot }) +
             '\n\n' +
             `Expected: ${hint} ${this.utils.printExpected(expected)}\n` +
@@ -66,7 +66,7 @@ export const expect = baseExpect.extend({
         }
 
         //If .not is used on assertion, updated Expected message with ${hint}
-        const hint = this.isNot ? 'not' : ''
+        const hint = this.isNot ? 'not' : '';
         const message = this.utils.matcherHint('shouldBeLessThanOrEqual', undefined, undefined, { isNot: this.isNot }) +
             '\n\n' +
             `Expected: ${hint} ${this.utils.printExpected(expected)}\n` +
@@ -86,7 +86,7 @@ export const expect = baseExpect.extend({
         try {
             await validateSchema(dirName, fileName, received, createSchemaFlag);
             pass = true;
-            message = `Schema validation passed`
+            message = 'Schema validation passed';
         } catch (e: any) {
             pass = false;
             const logs = apiLogger?.getRecentLogs();
@@ -97,5 +97,5 @@ export const expect = baseExpect.extend({
             message: () => message,
             pass
         };
-    },
+    }
 });

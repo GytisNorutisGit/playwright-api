@@ -27,6 +27,7 @@ jobs:
       if: ${{ !cancelled() }}
       with:
         report-file: test-results/results.json
+        job-summary: true
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

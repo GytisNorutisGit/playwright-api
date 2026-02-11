@@ -1,7 +1,7 @@
 name: Playwright Tests
 
 # ----------------------------------------------
-# Trigger
+# Triggers
 # ----------------------------------------------
 on:
   workflow_dispatch:

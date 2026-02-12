@@ -1,5 +1,6 @@
 import { test } from '../fixtures';
 import { expect } from '../utils/assertions';
+import postArticlePayload from '../request-objects/POST-articles.payload.json';
 
 
 test('Get Articles', async ({ api }) => {
@@ -8,7 +9,7 @@ test('Get Articles', async ({ api }) => {
         .params({ limit: 0, offset: 0 })
         .clearAuth() //Clears the auth header for this request to test the public endpoint
         .getRequest(200);
-    await expect(response).shouldMatchSchema('articles', 'GET_articles');
+    await expect(response).shouldMatchSchema('articles', 'GET-articles');
     expect(response).toHaveProperty('articles');
     expect(response.articles.length).shouldBeLessThanOrEqual(10);
     expect(response.articlesCount).shouldEqual(10);
@@ -18,7 +19,7 @@ test('Get Tags List', async ({ api }) => {
     const response = await api
         .path('/tags')
         .getRequest(200);
-    await expect(response).shouldMatchSchema('tags', 'GET_tags');
+    await expect(response).shouldMatchSchema('tags', 'GET-tags');
     expect(response).toHaveProperty('tags');
     expect(response.tags[0]).toContain('Test');
     expect(response.tags.length).shouldBeLessThanOrEqual(10);
@@ -26,12 +27,14 @@ test('Get Tags List', async ({ api }) => {
 
 test('Create & Delete Article', async ({ api }) => {
     //Create an article
+    const articlePayload = JSON.parse(JSON.stringify(postArticlePayload));
+    articlePayload.article.title = 'Test-123';
     const newArticleResponse = await api
         .path('/articles')
-        .body({ article: { title: 'Test-1', description: 'Test Title 1', body: 'Test Body 1', tagList: [] } })
+        .body(articlePayload)
         .postRequest(201);
-    await expect(newArticleResponse).shouldMatchSchema('articles', 'POST_articles');
-    expect(newArticleResponse.article.title).toBe('Test-1');
+    await expect(newArticleResponse).shouldMatchSchema('articles', 'POST-articles');
+    expect(newArticleResponse.article.title).toBe('Test-123');
     const slugId = newArticleResponse.article.slug;
 
     //Get call to verify 1st article is created
@@ -39,7 +42,7 @@ test('Create & Delete Article', async ({ api }) => {
         .path('/articles')
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
-    expect(articlesResponse.articles[0].title).shouldEqual('Test-1');
+    expect(articlesResponse.articles[0].title).shouldEqual('Test-123');
 
     //Delete the created article
     await api
@@ -51,14 +54,14 @@ test('Create & Delete Article', async ({ api }) => {
         .path('/articles')
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
-    expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual('Test-1');
+    expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual('Test-123');
 });
 
 test('Create, Update & Delete Article', async ({ api }) => {
     //Create an article
     const newArticleResponse = await api
         .path('/articles')
-        .body({ article: { title: 'Test-1', description: 'Test Title 1', body: 'Test Body 1', tagList: [] } })
+        .body(postArticlePayload)
         .postRequest(201);
     expect(newArticleResponse.article.title).toBe('Test-1');
     const slugId = newArticleResponse.article.slug;

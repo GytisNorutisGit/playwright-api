@@ -10,7 +10,7 @@ const ajv = new Ajv({ allErrors: true });
 addFormats(ajv);
 
 export async function validateSchema(dirName: string, fileName: string, responseBody: object, createSchemaFlag: boolean = false) {
-    const schemaPath = path.join(SCHEMA_BASE_PATH, dirName, `${fileName}_schema.json`);
+    const schemaPath = path.join(SCHEMA_BASE_PATH, dirName, `${fileName}.schema.json`);
 
     //Create schema automatically if createSchemaFlag is set to true
     if (createSchemaFlag) {

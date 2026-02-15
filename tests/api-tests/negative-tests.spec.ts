@@ -1,5 +1,5 @@
-import { test } from '../fixtures';
-import { expect } from '../utils/assertions';
+import { test } from '../../fixtures';
+import { expect } from '../../utils/assertions';
 
 [
     { testScenario: 'Check Error: Invalid Email', username: 'valid-username', email: 'invalid-email', password: 'valid-password', expectedErrors: { email: ['is invalid'] } },

@@ -11,20 +11,22 @@ export default defineConfig({
     retries: process.env.CI ? 2 : 0,
     workers: 1,
     reporter: [['html'], ['list'], ['json', { outputFile: 'test-results/results.json' }], ['junit', { outputFile: 'test-results/results.xml' }]],
-    use: {},
+    use: {
+        trace: 'retain-on-failure',
+    },
     projects: [
         {
             name: 'api-tests',
-            testMatch: 'example*',
-            dependencies: ['smoke-tests']
+            testDir: './tests/api-tests',
         },
         {
-            name: 'smoke-tests',
-            testMatch: 'smoke*'
+            name: 'ui-tests',
+            testDir: './tests/ui-tests',
+            use: {
+                defaultBrowserType: 'chromium',
+                headless: false,
+            },
+            workers: 2,
         },
-        {
-            name: 'all-tests',
-            testMatch: '**/*.spec.ts'
-        }
     ]
 });

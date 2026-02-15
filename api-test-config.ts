@@ -1,6 +1,7 @@
 const config = {
     apiUrl: 'https://conduit-api.bondaracademy.com/api',
     userEmail: process.env.USER_EMAIL || throwError('USER_EMAIL required'),
+    userName: 'gnorutis',
     userPassword: process.env.USER_PASSWORD || throwError('USER_PASSWORD required')
 };
 

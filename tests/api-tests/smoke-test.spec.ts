@@ -1,8 +1,10 @@
 import { test } from '../../fixtures';
 import { expect } from '../../utils/assertions';
-import postArticlePayload from '../../request-objects/POST-articles.payload.json';
 import { faker } from '@faker-js/faker';
 import { getNewRandomArticlePayload } from '../../helpers/data-generator';
+import postArticlePayload from '../../request-objects/POST-articles.payload.json';
+import postCommentPayload from '../../request-objects/POST-articles-comments.payload.json';
+
 
 test('Get Articles', async ({ api }) => {
     const response = await api
@@ -103,5 +105,58 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .getRequest(200);
     await expect(articlesResponseAfterDelete).shouldMatchSchema('articles', 'GET-articles');
     expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual(articlePayload.article.title);
+});
+
+test('HAR Flow - Create Article with Comments', async ({ api }) => {
+    //Get articles list
+    const articlesResponse = await api
+        .path('/articles')
+        .params({ limit: 10, offset: 0 })
+        .getRequest(200);
+    await expect(articlesResponse).shouldMatchSchema('articles', 'GET-articles');
+
+    //Get tags
+    const tagsResponse = await api
+        .path('/tags')
+        .getRequest(200);
+    await expect(tagsResponse).shouldMatchSchema('tags', 'GET-tags');
+
+    //Create article
+    const articleRequest = structuredClone(postArticlePayload);
+    articleRequest.article.title = faker.lorem.sentence(3);
+    articleRequest.article.description = faker.lorem.sentence(5);
+    articleRequest.article.body = faker.lorem.paragraphs(3);
+    const createArticleResponse = await api
+        .path('/articles')
+        .body(articleRequest)
+        .postRequest(201);
+    await expect(createArticleResponse).shouldMatchSchema('articles', 'POST-articles');
+    const articleSlug = createArticleResponse.article.slug;
+
+    //Get single article
+    const getArticleResponse = await api
+        .path(`/articles/${articleSlug}`)
+        .getRequest(200);
+    await expect(getArticleResponse).shouldMatchSchema('articles', 'GET-article', true);
+
+    //Get comments for article
+    const getCommentsResponse = await api
+        .path(`/articles/${articleSlug}/comments`)
+        .getRequest(200);
+    await expect(getCommentsResponse).shouldMatchSchema('articles', 'GET-articles-comments', true);
+
+    //Add comment to article
+    const commentRequest = structuredClone(postCommentPayload);
+    commentRequest.comment.body = faker.lorem.sentence();
+    const createCommentResponse = await api
+        .path(`/articles/${articleSlug}/comments`)
+        .body(commentRequest)
+        .postRequest(200);
+    await expect(createCommentResponse).shouldMatchSchema('articles', 'POST-articles-comments', true);
+
+    //Cleanup: Delete the created article
+    await api
+        .path(`/articles/${articleSlug}`)
+        .deleteRequest(204);
 });
 

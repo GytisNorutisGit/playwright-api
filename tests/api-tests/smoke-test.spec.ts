@@ -42,6 +42,7 @@ test('Create & Delete Article', async ({ api }) => {
         .path('/articles')
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
+    await expect(articlesResponse).shouldMatchSchema('articles', 'GET-articles');
     expect(articlesResponse.articles[0].title).shouldEqual(articlePayload.article.title);
 
     //Delete the created article
@@ -54,6 +55,7 @@ test('Create & Delete Article', async ({ api }) => {
         .path('/articles')
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
+    await expect(articlesResponseAfterDelete).shouldMatchSchema('articles', 'GET-articles');
     expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual(articlePayload.article.title);
 });
 
@@ -65,6 +67,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .path('/articles')
         .body(articlePayload)
         .postRequest(201);
+    await expect(newArticleResponse).shouldMatchSchema('articles', 'POST-articles');
     expect(newArticleResponse.article.title).shouldEqual(articlePayload.article.title);
     const slugId = newArticleResponse.article.slug;
 
@@ -76,6 +79,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .path(`/articles/${slugId}`)
         .body(articlePayload)
         .putRequest(200);
+    await expect(updateArticleResponse).shouldMatchSchema('articles', 'PUT-articles');
     const newSlugId = updateArticleResponse.article.slug;
     expect(updateArticleResponse.article.title).shouldEqual(articlePayload.article.title);
 
@@ -84,6 +88,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .path('/articles')
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
+    await expect(articlesResponse).shouldMatchSchema('articles', 'GET-articles');
     expect(articlesResponse.articles[0].title).shouldEqual(articlePayload.article.title);
 
     //Delete the created article
@@ -96,6 +101,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .path('/articles')
         .params({ limit: 0, offset: 0 })
         .getRequest(200);
+    await expect(articlesResponseAfterDelete).shouldMatchSchema('articles', 'GET-articles');
     expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual(articlePayload.article.title);
 });
 

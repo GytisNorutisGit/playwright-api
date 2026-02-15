@@ -67,7 +67,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
         .path('/articles')
         .body(articlePayload)
         .postRequest(201);
-    await expect(newArticleResponse).shouldMatchSchema('articles', 'POST-articles');
+    await expect(newArticleResponse).shouldMatchSchema('articles', 'POST-articles', true);
     expect(newArticleResponse.article.title).shouldEqual(articlePayload.article.title);
     const slugId = newArticleResponse.article.slug;
 

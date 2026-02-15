@@ -47,9 +47,32 @@ async function generateNewSchema(responseBody: object, schemaPath: string) {
     //NB: modify this to add additional formats if needed.
     try {
         const generatedSchema = createSchema(responseBody);
+        addDateTimeFormats(generatedSchema);
         await fs.mkdir(path.dirname(schemaPath), { recursive: true });
         await fs.writeFile(schemaPath, JSON.stringify(generatedSchema, null, 2), 'utf-8');
     } catch (error) {
         throw new Error(`Failed to create schema file: ${error instanceof Error ? error.message : String(error)}`);
+    }
+}
+
+function addDateTimeFormats(schema: Record<string, any>) {
+    const dateTimeProperties = ['createdAt', 'updatedAt'];
+
+    if (schema.properties) {
+        for (const key of dateTimeProperties) {
+            if (schema.properties[key] && schema.properties[key].type === 'string') {
+                schema.properties[key].format = 'date-time';
+            }
+        }
+
+        for (const value of Object.values(schema.properties)) {
+            if (typeof value === 'object' && value !== null) {
+                addDateTimeFormats(value as Record<string, any>);
+            }
+        }
+    }
+
+    if (schema.items && typeof schema.items === 'object') {
+        addDateTimeFormats(schema.items as Record<string, any>);
     }
 }

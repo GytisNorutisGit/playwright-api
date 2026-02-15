@@ -3,7 +3,7 @@ import { RequestHandler } from '../utils/request-handler';
 import { APILogger } from '../utils/logger';
 import { setCustomExpectLogger } from '../utils/assertions';
 import { config } from '../api-test-config';
-import { createToken } from '../helpers/createToken';
+import { createToken } from '../helpers/create-token';
 
 export type CustomFixtures = {
     api: RequestHandler;

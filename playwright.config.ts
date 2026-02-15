@@ -24,7 +24,7 @@ export default defineConfig({
             testDir: './tests/ui-tests',
             use: {
                 defaultBrowserType: 'chromium',
-                headless: false,
+                headless: true,
             },
             workers: 2,
         },

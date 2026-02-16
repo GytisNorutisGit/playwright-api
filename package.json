@@ -6,10 +6,11 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "clean:allure": "rimraf allure-results allure-report",
-    "pretest": "npm run clean:allure",
-    "test": "npx playwright test",
-    "allure:report": "npx allure generate && npx allure open"
+    "allure:clean": "rimraf allure-results allure-report",
+    "allure:report": "npx allure generate && npx allure open",
+    "allure:single-file": "npx allure generate --single-file allure-results",
+    "pretest": "npm run allure:clean",
+    "test": "npx playwright test"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
     "@types/node": "^25.2.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "allure-commandline": "^2.36.0",
     "allure-playwright": "^3.4.5",
     "dotenv": "^17.2.4",
     "eslint": "^9.39.2",

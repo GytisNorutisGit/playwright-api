@@ -106,7 +106,7 @@ test('Create, Update & Delete Article', async ({ api }) => {
     expect(articlesResponseAfterDelete.articles[0].title).not.shouldEqual(articlePayload.article.title);
 });
 
-test('HAR Flow - Create Article with Comments', async ({ api }) => {
+test('Create Article with Comments', async ({ api }) => {
     //Get articles list
     const articlesResponse = await api
         .path('/articles')

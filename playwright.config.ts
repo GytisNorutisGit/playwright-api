@@ -12,21 +12,21 @@ export default defineConfig({
     workers: 1,
     reporter: [['html', {open: 'never'}], ['list'], ['json', { outputFile: 'test-results/results.json' }], ['junit', { outputFile: 'test-results/results.xml' }]],
     use: {
-        trace: 'retain-on-failure',
+        trace: 'retain-on-failure'
     },
     projects: [
         {
             name: 'api-tests',
-            testDir: './tests/api-tests',
+            testDir: './tests/api-tests'
         },
         {
             name: 'ui-tests',
             testDir: './tests/ui-tests',
             use: {
                 defaultBrowserType: 'chromium',
-                headless: true,
+                headless: true
             },
-            workers: 2,
-        },
+            workers: 2
+        }
     ]
 });

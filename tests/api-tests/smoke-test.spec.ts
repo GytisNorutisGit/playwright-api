@@ -1,9 +1,8 @@
 import { test } from '../../fixtures';
 import { expect } from '../../utils/assertions';
 import { faker } from '@faker-js/faker';
-import { getNewRandomArticlePayload } from '../../helpers/data-generator';
-import postArticlePayload from '../../request-objects/POST-articles.payload.json';
-import postCommentPayload from '../../request-objects/POST-articles-comments.payload.json';
+import { createArticlePayload } from '../../api-contracts/request-payloads/POST-article.payload.ts';
+import { createArticleCommentPayload } from '../../api-contracts/request-payloads/POST-article-comments.payload.ts';  
 
 
 test('Get Articles', async ({ api }) => {
@@ -30,7 +29,7 @@ test('Get Tags List', async ({ api }) => {
 
 test('Create & Delete Article', async ({ api }) => {
     //Create an article
-    const articlePayload = getNewRandomArticlePayload();
+    const articlePayload = createArticlePayload();
     const newArticleResponse = await api
         .path('/articles')
         .body(articlePayload)
@@ -63,7 +62,7 @@ test('Create & Delete Article', async ({ api }) => {
 
 test('Create, Update & Delete Article', async ({ api }) => {
     //Create an article
-    const articlePayload = getNewRandomArticlePayload();
+    const articlePayload = createArticlePayload();
 
     const newArticleResponse = await api
         .path('/articles')
@@ -122,7 +121,7 @@ test('HAR Flow - Create Article with Comments', async ({ api }) => {
     await expect(tagsResponse).shouldMatchSchema('tags', 'GET-tags');
 
     //Create article
-    const articleRequest = structuredClone(postArticlePayload);
+    const articleRequest = createArticlePayload();
     articleRequest.article.title = faker.lorem.sentence(3);
     articleRequest.article.description = faker.lorem.sentence(5);
     articleRequest.article.body = faker.lorem.paragraphs(3);
@@ -146,7 +145,7 @@ test('HAR Flow - Create Article with Comments', async ({ api }) => {
     await expect(getCommentsResponse).shouldMatchSchema('articles', 'GET-articles-comments', true);
 
     //Add comment to article
-    const commentRequest = structuredClone(postCommentPayload);
+    const commentRequest = createArticleCommentPayload();
     commentRequest.comment.body = faker.lorem.sentence();
     const createCommentResponse = await api
         .path(`/articles/${articleSlug}/comments`)

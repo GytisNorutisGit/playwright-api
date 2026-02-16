@@ -4,7 +4,7 @@ import Ajv from 'ajv';
 import { createSchema } from 'genson-js';
 import addFormats from 'ajv-formats';
 
-const SCHEMA_BASE_PATH = './response-schemas';
+const SCHEMA_BASE_PATH = './api-contracts/response-schemas';
 // Setting allErrors to true to get all validation errors instead of just the first one.
 const ajv = new Ajv({ allErrors: true });
 addFormats(ajv);

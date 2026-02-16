@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "clean:allure": "rimraf allure-results allure-report",
+    "pretest": "npm run clean:allure",
+    "test": "npx playwright test",
+    "allure:report": "npx allure generate && npx allure open"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +21,7 @@
     "@types/node": "^25.2.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "allure-playwright": "^3.4.5",
     "dotenv": "^17.2.4",
     "eslint": "^9.39.2",
     "genson-js": "^0.0.8",

@@ -23,7 +23,8 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ${{ github.event.inputs.runner || 'self-hosted' }}
+    # runs-on: ${{ github.event.inputs.runner || 'self-hosted' }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       checks: write

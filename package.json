@@ -6,11 +6,10 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "allure:clean": "rimraf allure-results allure-report",
-    "allure:report": "npx allure generate && npx allure open",
+    "test": "npx playwright test",
     "allure:single-file": "npx allure generate --single-file allure-results",
-    "pretest": "npm run allure:clean",
-    "test": "npx playwright test"
+    "allure:history": "xcopy /Y /E /I allure-report\\history\\* allure-results\\history\\",
+    "allure:report": "npm run allure:history &&npx allure generate allure-results --clean -o allure-report && npx allure open"
   },
   "keywords": [],
   "author": "",

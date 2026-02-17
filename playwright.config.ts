@@ -12,7 +12,9 @@ export default defineConfig({
     workers: 1,
     reporter: [['html', {open: 'never'}], ['list'], ['json', { outputFile: 'test-results/results.json' }], ['junit', { outputFile: 'test-results/results.xml' }], ['allure-playwright']],
     use: {
-        trace: 'retain-on-failure'
+        trace: 'on',
+        screenshot: 'on',
+        video: 'on'
     },
     projects: [
         {
@@ -24,9 +26,11 @@ export default defineConfig({
             testDir: './tests/ui-tests',
             use: {
                 defaultBrowserType: 'chromium',
-                headless: true
+                headless: true,
+                screenshot: 'on',
+                video: 'on'
             },
-            workers: 2
+            workers: 1
         }
     ]
 });

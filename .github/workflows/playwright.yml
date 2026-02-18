@@ -85,6 +85,11 @@ jobs:
         publish_branch: gh-pages
         publish_dir: allure-report
         destination_dir: reports/${{ github.run_number }}
+        
+
+        
+
+
 
 
 

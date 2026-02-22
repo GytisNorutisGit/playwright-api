@@ -88,7 +88,7 @@ jobs:
         else
           echo "No previous history found"
         fi
-        git checkout -
+        git restore .
 
     - name: Generate Allure report
       run: allure generate allure-results --clean -o allure-report

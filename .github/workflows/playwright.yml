@@ -114,7 +114,12 @@ jobs:
       shell: bash
       run: |
         git fetch origin gh-pages
-        git checkout origin/gh-pages -- reports || mkdir -p reports
+        if git show-ref --quiet refs/heads/gh-pages; then
+          git checkout gh-pages
+        else
+          git checkout -b gh-pages origin/gh-pages
+        fi
+        mkdir -p reports
         cd reports
         echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Allure Reports</title></head><body><h1>Allure Reports</h1><ul>' > index.html
         for d in [0-9]*; do

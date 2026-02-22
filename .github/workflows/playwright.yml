@@ -108,6 +108,27 @@ jobs:
         publish_branch: gh-pages
         publish_dir: allure-report
         destination_dir: reports/${{ github.run_number }}
+
+    # Generate Allure reports landing page
+    - name: Generate Allure reports index.html
+      shell: bash
+      run: |
+        git fetch origin gh-pages
+        git checkout origin/gh-pages -- reports || mkdir -p reports
+        cd reports
+        echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Allure Reports</title></head><body><h1>Allure Reports</h1><ul>' > index.html
+        for d in [0-9]*; do
+          if [ -d "$d" ]; then
+            echo "<li><a href=\"$d/\">Report #$d</a></li>" >> index.html
+          fi
+        done
+        echo '</ul></body></html>' >> index.html
+        cd ..
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        git add reports/index.html
+        git commit -m "Update Allure reports index.html" || echo "No changes to commit"
+        git push origin gh-pages
         
 
         

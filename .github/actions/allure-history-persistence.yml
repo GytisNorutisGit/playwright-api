@@ -1,0 +1,27 @@
+# Composite action for Allure history persistence
+name: 'Allure History Persistence'
+description: 'Copy previous Allure history for trend preservation'
+runs:
+  using: 'composite'
+  steps:
+    - name: Copy previous Allure history
+      shell: bash
+      run: |
+        git fetch origin gh-pages
+        mkdir -p allure-results/history
+        LAST_RUN=$(( ${{ github.run_number }} - 1 ))
+        FOUND_HISTORY=0
+        while [ $LAST_RUN -gt 0 ]; do
+          if git ls-tree --name-only origin/gh-pages reports/$LAST_RUN/history | grep history; then
+            echo "Found history in reports/$LAST_RUN/history"
+            git checkout origin/gh-pages -- reports/$LAST_RUN/history
+            cp -r reports/$LAST_RUN/history/* allure-results/history/ || true
+            FOUND_HISTORY=1
+            break
+          fi
+          LAST_RUN=$((LAST_RUN - 1))
+        done
+        if [ $FOUND_HISTORY -eq 0 ]; then
+          echo "No previous history found"
+        fi
+        git restore .

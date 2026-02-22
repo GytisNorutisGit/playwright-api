@@ -21,109 +21,25 @@ jobs:
     steps:
 
     # Setup -------------------------------------
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
+    - uses: ./.github/actions/setup.yml
 
     # Environment --------------------------------
-    - name: Create .env file
-      run: |
-        echo "USER_EMAIL=${{ secrets.USER_EMAIL }}" >> .env
-        echo "USER_PASSWORD=${{ secrets.USER_PASSWORD }}" >> .env
+    - uses: ./.github/actions/environment.yml
 
     # Test Execution -----------------------------
-    - name: Install Playwright Browsers
-      run: npx playwright install chromium
-    - name: Run Playwright tests
-      run: npx playwright test
+    - uses: ./.github/actions/test-execution.yml
 
     # Reporting ----------------------------------
-    - name: Playwright Report Summary
-      uses: daun/playwright-report-summary@v3
-      if: ${{ !cancelled() }}
-      with:
-        report-file: test-results/results.json
-        job-summary: true
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: ${{ !cancelled() }}
-      with:
-        name: Test Summary
-        path: test-results/results.xml
-        reporter: java-junit
-
-    # Allure Report Publishing --------------------
-    - name: Install Allure CLI
-      run: npm install -g allure-commandline --save-dev
+    - uses: ./.github/actions/reporting.yml
 
     # Allure History Persistence ----------------
-    - name: Copy previous Allure history
-      shell: bash
-      run: |
-        git fetch origin gh-pages
-        mkdir -p allure-results/history
-        LAST_RUN=$(( ${{ github.run_number }} - 1 ))
-        FOUND_HISTORY=0
-        while [ $LAST_RUN -gt 0 ]; do
-          if git ls-tree --name-only origin/gh-pages reports/$LAST_RUN/history | grep history; then
-            echo "Found history in reports/$LAST_RUN/history"
-            git checkout origin/gh-pages -- reports/$LAST_RUN/history
-            cp -r reports/$LAST_RUN/history/* allure-results/history/ || true
-            FOUND_HISTORY=1
-            break
-          fi
-          LAST_RUN=$((LAST_RUN - 1))
-        done
-        if [ $FOUND_HISTORY -eq 0 ]; then
-          echo "No previous history found"
-        fi
-        git restore .
+    - uses: ./.github/actions/allure-history-persistence.yml
 
-    - name: Generate Allure report
-      run: allure generate allure-results --clean -o allure-report
-
-    - name: Publish Allure report to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: allure-report
-        destination_dir: reports/${{ github.run_number }}
+    # Allure Report Publishing --------------------
+    - uses: ./.github/actions/allure-report-publishing.yml
 
     # Generate Allure reports landing page
-    - name: Generate Allure reports index.html
-      shell: bash
-      run: |
-        git fetch origin gh-pages
-        if git show-ref --quiet refs/heads/gh-pages; then
-          git checkout gh-pages
-        else
-          git checkout -b gh-pages origin/gh-pages
-        fi
-        mkdir -p reports
-        cd reports
-        echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Allure Reports</title></head><body><h1>Allure Reports</h1><ul>' > index.html
-        for d in [0-9]*; do
-          if [ -d "$d" ]; then
-            echo "<li><a href=\"$d/\">Report #$d</a></li>" >> index.html
-          fi
-        done
-        echo '</ul></body></html>' >> index.html
-        cd ..
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-        git add reports/index.html
-        git commit -m "Update Allure reports index.html" || echo "No changes to commit"
-        git push origin gh-pages
+    - uses: ./.github/actions/generate-allure-reports-landing-page.yml
         
 
         

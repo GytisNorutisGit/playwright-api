@@ -1,0 +1,12 @@
+# Composite action for test execution
+name: 'Test Execution'
+description: 'Install browsers and run Playwright tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Playwright Browsers
+      run: npx playwright install chromium
+      shell: bash
+    - name: Run Playwright tests
+      run: npx playwright test
+      shell: bash

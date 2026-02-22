@@ -1,0 +1,25 @@
+# Composite action for reporting
+name: 'Reporting'
+description: 'Generate and upload test reports'
+runs:
+  using: 'composite'
+  steps:
+    - name: Playwright Report Summary
+      uses: daun/playwright-report-summary@v3
+      if: ${{ !cancelled() }}
+      with:
+        report-file: test-results/results.json
+        job-summary: true
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: ${{ !cancelled() }}
+      with:
+        name: Test Summary
+        path: test-results/results.xml
+        reporter: java-junit

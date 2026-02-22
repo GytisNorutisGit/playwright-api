@@ -1,6 +1,10 @@
 # Composite action for Allure report publishing
 name: 'Allure Report Publishing'
 description: 'Install Allure CLI and publish report'
+inputs:
+  github_token:
+    description: 'GitHub token for publishing to gh-pages'
+    required: true
 runs:
   using: 'composite'
   steps:
@@ -13,7 +17,7 @@ runs:
     - name: Publish Allure report to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ inputs.github_token }}
         publish_branch: gh-pages
         publish_dir: allure-report
         destination_dir: reports/${{ github.run_number }}

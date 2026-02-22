@@ -20,26 +20,28 @@ jobs:
       checks: write
     steps:
 
-    # Setup -------------------------------------
-    - uses: ./.github/actions/setup.yml
+    # Pre-Requisites -------------------------------------
+    - uses: ./.github/actions/setup
 
-    # Environment --------------------------------
-    - uses: ./.github/actions/environment.yml
+    - uses: ./.github/actions/environment
+      with:
+        user_email: ${{ secrets.USER_EMAIL }}
+        user_password: ${{ secrets.USER_PASSWORD }}
 
     # Test Execution -----------------------------
-    - uses: ./.github/actions/test-execution.yml
+    - uses: ./.github/actions/test-execution
 
-    # Reporting ----------------------------------
-    - uses: ./.github/actions/reporting.yml
+    # Playwright Reporting (Github) ----------------------------------
+    - uses: ./.github/actions/reporting
 
-    # Allure History Persistence ----------------
-    - uses: ./.github/actions/allure-history-persistence.yml
+    # Allure Reporting ----------------
+    - uses: ./.github/actions/allure-history-persistence
 
-    # Allure Report Publishing --------------------
-    - uses: ./.github/actions/allure-report-publishing.yml
+    - uses: ./.github/actions/allure-report-publishing
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    # Generate Allure reports landing page
-    - uses: ./.github/actions/generate-allure-reports-landing-page.yml
+    - uses: ./.github/actions/generate-allure-reports-landing-page
         
 
         

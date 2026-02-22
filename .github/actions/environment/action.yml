@@ -1,0 +1,18 @@
+# Composite action for environment
+name: 'Environment'
+description: 'Set up environment variables'
+inputs:
+  user_email:
+    description: 'User email for authentication'
+    required: true
+  user_password:
+    description: 'User password for authentication'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Create .env file
+      run: |
+        echo "USER_EMAIL=${{ inputs.user_email }}" >> .env
+        echo "USER_PASSWORD=${{ inputs.user_password }}" >> .env
+      shell: bash

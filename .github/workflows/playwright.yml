@@ -21,6 +21,7 @@ jobs:
     steps:
 
     # Pre-Requisites -------------------------------------
+    - uses: actions/checkout@v4
     - uses: ./.github/actions/setup
 
     - uses: ./.github/actions/environment

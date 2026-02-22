@@ -15,13 +15,19 @@ runs:
         fi
         mkdir -p reports
         cd reports
-        echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Allure Reports</title></head><body><h1>Allure Reports</h1><ul>' > index.html
+        echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Allure Reports</title></head><body><h1>Allure Reports</h1><table border="1" cellpadding="6" style="border-collapse:collapse;"><tr><th>Report</th><th>Date/Time</th></tr>' > index.html
         for d in [0-9]*; do
           if [ -d "$d" ]; then
-            echo "<li><a href=\"$d/\">Report #$d</a></li>" >> index.html
+            # Use index.html as the reference file for timestamp
+            if [ -f "$d/index.html" ]; then
+              dt=$(stat -c '%y' "$d/index.html" | cut -d'.' -f1)
+            else
+              dt="N/A"
+            fi
+            echo "<tr><td><a href=\"$d/\">Report #$d</a></td><td>$dt</td></tr>" >> index.html
           fi
         done
-        echo '</ul></body></html>' >> index.html
+        echo '</table></body></html>' >> index.html
         cd ..
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"

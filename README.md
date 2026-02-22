@@ -13,6 +13,6 @@ test.skip || test.fixme
 test.only
 
 # Allure Reporting
-This project is set up with allure report via github actions & pages,
-After a test suite finishes execution the report will be available using the following url:
-https://gytisnorutisgit.github.io/playwright-api/reports/<build number>
+This project is set up with allure reporting via github actions & pages,
+After a test suite finishes execution the report will be available on following url:
+https://gytisnorutisgit.github.io/playwright-api/reports

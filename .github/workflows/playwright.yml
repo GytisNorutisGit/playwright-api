@@ -5,15 +5,6 @@ name: Playwright Tests
 # ----------------------------------------------
 on:
   workflow_dispatch:
-    inputs:
-      runner:
-        description: 'Where to run tests'
-        required: true
-        default: 'self-hosted'
-        type: choice
-        options:
-          - self-hosted
-          - ubuntu-latest
   push:
     branches: [ main, master ]
 
@@ -23,7 +14,6 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    # runs-on: ${{ github.event.inputs.runner || 'self-hosted' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

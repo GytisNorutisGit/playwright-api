@@ -34,3 +34,11 @@ runs:
         publish_branch: gh-pages
         publish_dir: allure-report
         destination_dir: reports/${{ github.run_number }}
+    - name: Add reportUrl to all history-trend entries
+      shell: bash
+      run: |
+          history_file="allure-report/widgets/history-trend.json"
+          report_url="https://your-username.github.io/your-repo/reports/${GITHUB_RUN_NUMBER}/"
+          tmp_file="${history_file}.tmp"
+          jq --arg url "$report_url" 'map(.reportUrl = $url)' "$history_file" > "$tmp_file"
+          mv "$tmp_file" "$history_file"
